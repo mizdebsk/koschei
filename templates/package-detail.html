@@ -226,7 +226,7 @@
       <table class="card-block table table-hover">
         {% for entry in entries %}
           <tr
-            {% if entry.version %} {# test whether it's a build #}
+            {% if entry.started %} {# test whether it's a build #}
             {% set detail_url = url_for('build_detail', build_id=entry.id) %}
             class="{{ entry.css_class }} kk-clickable" onClick="for (var node = arguments[0].target; node != null; node = node.parentElement) if (node.tagName == 'A') return; window.location = '{{ detail_url }}'"
             {% else %}
@@ -234,7 +234,7 @@
             {% endif %}
             >
           <td>
-            {% if not entry.version %}
+            {% if not entry.started %}
             {# is an resolution entry #}
             <div class="row">
               <div class="col-sm-2">{{ entry.timestamp|date }}</div>
