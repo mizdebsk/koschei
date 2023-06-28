@@ -5,6 +5,7 @@ EXPOSE 8080
 RUN : \
  && dnf -y --refresh update \
  && dnf -y install \
+      python3-pip \
       python3-sqlalchemy \
       python3-psycopg2 \
       python3-rpm \
@@ -31,6 +32,12 @@ RUN : \
  && useradd koschei \
  && :
 
+# Install koschei-messages from PyPI as it is not packaged yet
+RUN : \
+ && pip-3 install koschei-messages==1.0.1 \
+ && :
+
+# Avoid version conflict between fedora-bootstrap and jQuery
 RUN curl https://code.jquery.com/jquery-3.3.1.min.js -o /usr/share/web-assets/jquery/latest/jquery.min.js
 
 COPY bin/ /usr/bin/
