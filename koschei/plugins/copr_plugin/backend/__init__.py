@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2016 Red Hat, Inc.
+# Copyright (C) 2016  Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,16 +16,5 @@
 #
 # Author: Michael Simacek <msimacek@redhat.com>
 
-from setuptools import setup, find_packages
-
-setup(
-    name='koschei',
-    version='2.4.0',
-    description='',
-    author='',
-    author_email='',
-    url='',
-    packages=find_packages(exclude=["test"]),
-    include_package_data=True,
-    test_suite='nose.collector',
-)
+# event listeners
+from . import copr_polling, cleanup

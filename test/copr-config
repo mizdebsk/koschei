@@ -1,0 +1,5 @@
+[copr-cli]
+login = asdf
+username = koschei
+token = invalidtoken
+copr_url = https://copr.stg.fedoraproject.org

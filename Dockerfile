@@ -1,10 +1,11 @@
-FROM registry.fedoraproject.org/fedora:35
+FROM registry.fedoraproject.org/fedora:39
 ENV PYTHONPATH=/usr/share/koschei
 EXPOSE 8080
 
 RUN : \
  && dnf -y --refresh update \
  && dnf -y install \
+      python3-pip \
       python3-sqlalchemy \
       python3-psycopg2 \
       python3-rpm \
@@ -27,18 +28,31 @@ RUN : \
       python3-dogpile-cache \
       python3-alembic \
       postgresql \
+      python3-copr \
+      postgresql-server \
+      python3-pytest \
+      python3-mock \
+      python3-vcrpy \
  && dnf -y clean all \
  && useradd koschei \
  && :
 
+# Install koschei-messages from PyPI as it is not packaged yet
+RUN : \
+ && pip-3 install koschei-messages==1.0.1 \
+ && :
+
+# Avoid version conflict between fedora-bootstrap and jQuery
 RUN curl https://code.jquery.com/jquery-3.3.1.min.js -o /usr/share/web-assets/jquery/latest/jquery.min.js
 
 COPY bin/ /usr/bin/
 COPY ./ /usr/share/koschei/
 
+RUN sudo -u koschei koschei-selfcheck
+
 RUN : \
  && sed 's|@CACHEDIR@|/var/cache/koschei|g; s|@DATADIR@|/usr/share/koschei|g; s|@CONFDIR@|/etc/koschei|g; s|@STATEDIR@|/var/lib/koschei|g' /usr/share/koschei/config.cfg.template >/usr/share/koschei/config.cfg \
- && sed -i s/@VERSION@/$(sed 's/\(.......\).*/\1/' /usr/share/koschei/.git/$(cat /usr/share/koschei/.git/HEAD | sed 's/.*: *//'))/ /usr/share/koschei/config.cfg \
+ && sed -i s/@VERSION@/$(/usr/share/koschei/aux/version.sh /usr/share/koschei)/ /usr/share/koschei/config.cfg \
  && chmod -R a+rwX /usr/share/koschei/ \
  && mkdir -m 777 /var/cache/koschei/ /var/cache/koschei/repodata/ \
  && :
