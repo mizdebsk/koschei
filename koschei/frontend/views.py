@@ -796,6 +796,9 @@ def edit_collection(name):
 
 
 @app.route('/affected-by/<dep_name>')
+# Affected-by is an expensive query.
+# Require login to prevent abuse from scrappers.
+@auth.login_required()
 def affected_by(dep_name):
     """
     Display which packages are possibly affected by given dependency change.
