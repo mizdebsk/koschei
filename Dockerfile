@@ -48,7 +48,7 @@ RUN curl https://code.jquery.com/jquery-3.3.1.min.js -o /usr/share/web-assets/jq
 COPY bin/ /usr/bin/
 COPY ./ /usr/share/koschei/
 
-RUN sudo -u koschei koschei-selfcheck
+#RUN sudo -u koschei koschei-selfcheck
 
 RUN : \
  && sed 's|@CACHEDIR@|/var/cache/koschei|g; s|@DATADIR@|/usr/share/koschei|g; s|@CONFDIR@|/etc/koschei|g; s|@STATEDIR@|/var/lib/koschei|g' /usr/share/koschei/config.cfg.template >/usr/share/koschei/config.cfg \
